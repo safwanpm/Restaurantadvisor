@@ -33,11 +33,10 @@ RegisterRouter.post('/save-user', async (req, res) => {
     try {
         const { name, password, email, phone } = req.body;
         console.log(req.body);
-        const hashedPass = await bcrypt.hash(password, 12)
         const loginData = {
             name: name,
-            password: hashedPass,
-            role: "1",
+            password: password,
+            role: "0",
             status: "0"
         }
 

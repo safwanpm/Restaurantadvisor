@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../../../components/User/navbar/Navbar'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Add_hotel() {
 
     const id = localStorage.getItem('hotel_id')
@@ -204,7 +206,7 @@ function Add_hotel() {
                                     <option 
                                         value={district._id}>
                                             {district.district} 
-                                    </option>
+                                    </option>   
                                 ))}
                             </select>
 
