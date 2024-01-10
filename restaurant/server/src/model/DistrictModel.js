@@ -3,7 +3,6 @@ mongoose.connect('mongodb+srv://safwanpm0:safwanpm0@cluster0.dk6pqys.mongodb.net
 
 const Schema =mongoose.Schema
 const DistrictSchema= new Schema({
-    name: {type:String},
     district: {type:String},
 
 })

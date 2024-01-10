@@ -10,24 +10,42 @@ const path = require('path');
 const DistrictModel = require('../model/DistrictModel')
 const HotelDistrictModel = require('../model/HotelDistrictModel')
 
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         const destinationPath = path.join('../client/public/uploads/');
+//         cb(null, destinationPath)
+//     },
+//     filename:function (req, file, cb) {
+
+//         cb(null, req.body.name)
+//     }
+// })
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const destinationPath = path.join('../client/public/uploads/');
-        cb(null, destinationPath)
+    destination: function (req, file, cb)  {
+        const destinationPath = path.join( '../client/public/uploads/');
+        cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
-
-        cb(null, req.body.name)
+        const uniqueFileName = `${file.originalname}`;
+        cb(null, uniqueFileName);
     }
-})
+});
+
 
 const upload = multer({ storage: storage })
 
-// RegisterRouter.post('/upload', upload.single('file'), (req, res) => {
-//     res.status(200).json({
-//         message: "logo added"
-//     })
-// })
+RegisterRouter.post('/upload', upload.single('file'), (req, res) => {
+    res.status(200).json({
+        message: "logo added"
+    })
+})
+
+
+RegisterRouter.post('/upload-images', upload.array('files',6), (req, res) => {
+    res.status(200).json({
+        message: "images added"
+    })
+})
 
 RegisterRouter.post('/save-user', async (req, res) => {
     try {
@@ -201,7 +219,8 @@ RegisterRouter.post('/save-login', async (req, res) => {
 
 RegisterRouter.post('/save-hotel', async (req, res) => {
     try {
-        const { name, email, district, place, pin, time, phone, special, meals, features, logo, hotelId } = req.body;
+        const { name, email, district, place, pin, time, phone, special, meals,
+             features, logo, hotelId,images,image2,image3,image4,image5,image6 } = req.body;
 
         console.log(req.body);
 
@@ -226,7 +245,7 @@ RegisterRouter.post('/save-hotel', async (req, res) => {
 
 
         const data = {
-            district:district,
+            district: district,
             name: name,
             email: email,
             place: place,
@@ -237,9 +256,13 @@ RegisterRouter.post('/save-hotel', async (req, res) => {
             meals: meals,
             features: features,
             logo: logo,
-            hotelId: hotelId
-            // image1:req.file.filename,
-            // image2:req.file.filename,
+            hotelId: hotelId,
+            images:images,
+            image2:image2,
+            image3:image3,
+            image4:image4,
+            image5:image5,
+            image6:image6,
 
         }
         console.log('data', data);
@@ -260,7 +283,7 @@ RegisterRouter.post('/save-hotel', async (req, res) => {
             })
         }
 
-       
+
 
     }
     catch (error) {
@@ -311,9 +334,10 @@ RegisterRouter.get('/save-district/:id', async (req, res) => {
 
 
 
-RegisterRouter.get('/view-district', async (req, res) => {
+RegisterRouter.get('/view-district/:district', async (req, res) => {
     try {
-        const HotelDetails = await DistrictModel.find()
+        const district = req.params.district;
+        const HotelDetails = await AddHotelModel.find({district:district})
         // console.log(contactDetails);
         if (HotelDetails) {
             return res.status(200).json({
@@ -322,28 +346,20 @@ RegisterRouter.get('/view-district', async (req, res) => {
                 data: HotelDetails
             })
         }
-    }
-    catch (error) {
-    }
-})
-
-
-RegisterRouter.get('/review/:id', async (req, res) => {
-    try {
-        const item = req.params.id;
-        const reviewDetails = await AddHotelModel.find()
-        console.log(reviewDetails);
-        if (reviewDetails) {
-            return res.status(200).json({
-                success: true,
-                error: false,
-                data: reviewDetails
+        else{
+            return res.status(400).json({
+                success: false,
+                error: true,
+                message:"No Reestaurants found"
             })
         }
     }
     catch (error) {
     }
 })
+
+
+
 
 
 // RegisterRouter.post('/delete/:id', async(req, res) => {
@@ -398,6 +414,21 @@ RegisterRouter.post('/add-district', async (req, res) => {
 
 
 
+})
+RegisterRouter.get('/view-district', async (req, res) => {
+    try {
+        const reviewDetails = await DistrictModel.find()
+        console.log(reviewDetails);
+        if (reviewDetails) {
+            return res.status(200).json({
+                success: true,
+                error: false,
+                data: reviewDetails
+            })
+        }
+    }
+    catch (error) {
+    }
 })
 
 module.exports = RegisterRouter

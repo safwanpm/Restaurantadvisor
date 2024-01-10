@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 
 
 function User_homebg() {
-  return (
+  return (<>
+ 
     <div id='bgdivs' className='container-fluid'>
         <div className='row'>
           <div className='col-lg-6' id='bgdiv1'>
@@ -22,86 +23,86 @@ function User_homebg() {
                   Select One
                 </button>
                 <ul className="dropdown-menu">
-                 <Link to={'/user/alappuzha'}> <li>
+                 <Link to={'/user/Alappuzha'}> <li>
                     <a className="dropdown-item" >
                     Alappuzha
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/ernakulam'}> <li>
+                  <Link to={'/user/Ernakulam'}> <li>
                     <a className="dropdown-item" >
                     Ernakulam
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/kozhikode'}> <li>
+                  <Link to={'/user/Kozhikode'}> <li>
                     <a className="dropdown-item" >
                     Kozhikode
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/palakkad'}> <li>
+                  <Link to={'/user/Palakkad'}> <li>
                     <a className="dropdown-item" >
                     Palakkad
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/kollam'}> <li>
+                  <Link to={'/user/Kollam'}> <li>
                     <a className="dropdown-item" >
                     Kollam
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/kannur'}> <li>
+                  <Link to={'/user/Kannur'}> <li>
                     <a className="dropdown-item" >
                     Kannur
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/kasaragod'}> <li>
+                  <Link to={'/user/Kasaragod'}> <li>
                     <a className="dropdown-item" >
                     Kasaragod
                     </a>
                   </li>
                   </Link>
 
-                  <Link to={'/user/idukki'}> <li>
+                  <Link to={'/user/Idukki'}> <li>
                     <a className="dropdown-item" >
                     Idukki
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/kottayam'}> <li>
+                  <Link to={'/user/Kottayam'}> <li>
                     <a className="dropdown-item" >
                     Kottayam
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/thrissur'}> <li>
+                  <Link to={'/user/Thrissur'}> <li>
                     <a className="dropdown-item" >
                     Thrissur
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/pathanamthitta'}> <li>
+                  <Link to={'/user/Pathanamthitta'}> <li>
                     <a className="dropdown-item" >
                     Pathanamthitta
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/malappuram'}> <li>
+                  <Link to={'/user/Malappuram'}> <li>
                     <a className="dropdown-item" >
                     Malappuram
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/wayanad'}> <li>
+                  <Link to={'/user/Wayanad'}> <li>
                     <a className="dropdown-item" >
                     Wayanad
                     </a>
                   </li>
                   </Link>
-                  <Link to={'/user/thiruvananthapuram'}> <li>
+                  <Link to={'/user/Thiruvananthapuram'}> <li>
                     <a className="dropdown-item" >
                     Thiruvananthapuram
                     </a>
@@ -118,6 +119,7 @@ function User_homebg() {
           </div>
         </div>
       </div>
+      </>
   )
 }
 
