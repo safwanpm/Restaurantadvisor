@@ -4,6 +4,8 @@ import axios from 'axios'
 import './Login.css'
 import { useNavigate } from 'react-router-dom'
 import Loginpg from '../../../pages/login/Loginpg'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Login() {
 
 
@@ -69,26 +71,32 @@ function Login() {
     setIsSubmit(true)
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       axios.post('http://localhost:4000/save/save-login', contacts)
-        .then((response) => {
-          console.log('response', response);
-          if (response.data.role == 0) {
-            localStorage.setItem('role', response.data.role);
-            localStorage.setItem('User id', response.data.user_id);
+        .then((res) => {
+          console.log('response', res);
+          if (res.data.role == 0) {
+            localStorage.setItem('role', res.data.role);
+            localStorage.setItem('User_id', res.data.user_id);
+            localStorage.setItem('username', res.data.username);
             navigate('/admin')
+            toast.success(res.data.message)
           }
-          if (response.data.role == 1) {
-            localStorage.setItem('role', response.data.role);
-            localStorage.setItem('User id', response.data.user_id);
+          if (res.data.role == 1) {
+            localStorage.setItem('role', res.data.role);
+            localStorage.setItem('User_id', res.data.user_id);
+            localStorage.setItem('username', res.data.username);
             navigate('/user')
+            toast.success(res.data.message)
           }
-          if (response.data.role == 2) {
-            localStorage.setItem('role', response.data.role);
-            localStorage.setItem('hotel_id', response.data.hotel_id);
+          if (res.data.role == 2) {
+            localStorage.setItem('role', res.data.role);
+            localStorage.setItem('hotel_id', res.data.hotel_id);
             navigate('/hotel')
+            toast.success(res.data.message)
           }
         })
         .catch(err => {
           console.log('error', err);
+          toast.error(err.response.data.message)
         })
     }
 

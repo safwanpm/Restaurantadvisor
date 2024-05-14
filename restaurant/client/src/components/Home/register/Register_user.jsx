@@ -2,6 +2,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import React from 'react'
 import './Register_user.css'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Register_user() {
 
 
@@ -51,10 +53,12 @@ function Register_user() {
             axios.post('http://localhost:4000/save/save-user', data)
                 .then((res) => {
                     console.log("res", res);
+                    toast.success(res.data.message)
                     window.location.reload();
                 })
                 .catch(err => {
                     console.log(err);
+                    toast.error(err.response.data.message)
                 })
         }
     }
@@ -100,7 +104,7 @@ function Register_user() {
                                 aria-label="Close"
                             />
                         </div>
-                        <div className="modal-body">
+                        <div className="modal-body text-start">
                             <div className="mb-3">
                                 <label htmlFor="exampleInputPassword1" className="form-label">
                                     Name
@@ -113,7 +117,7 @@ function Register_user() {
                                     className="form-control"
                                     id="exampleInputPassword1"
                                 />
-                                <span style={{ color: formErrors.name ? "red" : "" }}> {formErrors.name} </span>
+                                <span className='validSpan' style={{ color: formErrors.name ? "red" : "" }}> {formErrors.name} </span>
                             </div>
 
                             <div className="mb-3">
@@ -129,7 +133,7 @@ function Register_user() {
                                     id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                 />
-                                <span style={{ color: formErrors.email ? "red" : "" }}> {formErrors.email} </span>
+                                <span className='validSpan'style={{ color: formErrors.email ? "red" : "" }}> {formErrors.email} </span>
 
                             </div>
                             <div className="mb-3">
@@ -144,7 +148,7 @@ function Register_user() {
                                     className="form-control"
                                     id="exampleInputPassword1"
                                 />
-                                <span style={{ color: formErrors.password ? "red" : "" }}> {formErrors.password} </span>
+                                <span className='validSpan'style={{ color: formErrors.password ? "red" : "" }}> {formErrors.password} </span>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInputPassword1" className="form-label">
@@ -158,7 +162,7 @@ function Register_user() {
                                     className="form-control"
                                     id="exampleInputPassword1"
                                 />
-                                <span style={{ color: formErrors.phone ? "red" : "" }}> {formErrors.phone} </span>
+                                <span className='validSpan' style={{ color: formErrors.phone ? "red" : "" }}> {formErrors.phone} </span>
                             </div>
                             {/* <div className="mb-3 form-check">
                                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />

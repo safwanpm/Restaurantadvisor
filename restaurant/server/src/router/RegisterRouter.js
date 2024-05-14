@@ -9,6 +9,7 @@ const multer = require('multer')
 const path = require('path');
 const DistrictModel = require('../model/DistrictModel')
 const HotelDistrictModel = require('../model/HotelDistrictModel')
+const { error, log } = require('console')
 
 // const storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
@@ -21,8 +22,8 @@ const HotelDistrictModel = require('../model/HotelDistrictModel')
 //     }
 // })
 const storage = multer.diskStorage({
-    destination: function (req, file, cb)  {
-        const destinationPath = path.join( '../client/public/uploads/');
+    destination: function (req, file, cb) {
+        const destinationPath = path.join('../client/public/uploads/');
         cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
@@ -34,32 +35,64 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-RegisterRouter.post('/upload', upload.single('file'), (req, res) => {
+RegisterRouter.post('/upload-logo', upload.single('logo'), (req, res) => {
     res.status(200).json({
         message: "logo added"
     })
 })
 
 
-RegisterRouter.post('/upload-images', upload.array('files',6), (req, res) => {
+RegisterRouter.post('/upload-images', upload.array('files', 6), (req, res) => {
     res.status(200).json({
-        message: "images added"
+        message: "images add    ed"
     })
+})
+
+RegisterRouter.get('/view-hoteldetails', async (req, res) => {
+
+    try {
+        const id = req.query.id
+        const details = await AddHotelModel.findOne({ hotelId: id })
+        console.log("details", details);
+        if (details) {
+            return res.status(200).json({
+                success: true,
+                error: false,
+                data: details,
+                message: "success"
+            })
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                error: true,
+                message: "No data found"
+            })
+        }
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: true,
+            message: "catch error"
+        })
+    }
 })
 
 RegisterRouter.post('/save-user', async (req, res) => {
     try {
         const { name, password, email, phone } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
+        const hashedPass = await bcrypt.hash(password, 12)
         const loginData = {
             name: name,
-            password: password,
-            role: "0",
+            password: hashedPass,
+            role: "1",
             status: "0"
         }
 
         const logins = await LoginModel(loginData).save()
-        console.log('log', loginData);
+        // console.log('log', loginData);
         const details = {
             loginId: logins._id,
             email: email,
@@ -104,7 +137,7 @@ RegisterRouter.post('/save-restaurant', async (req, res) => {
 
 
         const { name, password, email, district } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         const hashedPass = await bcrypt.hash(password, 12)
         const loginData = {
             name: name,
@@ -114,7 +147,7 @@ RegisterRouter.post('/save-restaurant', async (req, res) => {
         }
 
         const logins = await LoginModel(loginData).save()
-        console.log('log', loginData);
+        // console.log('log', loginData);
         const details = {
             loginId: logins._id,
             email: email,
@@ -157,11 +190,14 @@ RegisterRouter.post('/save-login', async (req, res) => {
                 message: "user not found"
             })
         }
+       
 
         const encrypt = await bcrypt.compare(password, user.password)
-        console.log('user', user);
+        console.log('user', user.name);
+        const username= user.name;
         if (encrypt == true) {
             if (user.role == 0) {
+                // const usename = await LoginModel.findOne({ _id: loginId })
                 const Users = await RegisterModel.findOne({ loginId: user._id })
                 return res.status(200).json({
                     success: true,
@@ -169,6 +205,8 @@ RegisterRouter.post('/save-login', async (req, res) => {
                     role: user.role,
                     login_id: user._id,
                     user_id: Users._id,
+                    username: username,
+
                     message: " Admin Login successfully"
                 })
             }
@@ -180,7 +218,8 @@ RegisterRouter.post('/save-login', async (req, res) => {
                     role: user.role,
                     login_id: user._id,
                     user_id: Users._id,
-                    message: " User Login successfully"
+                    message: " User Login successfully",
+                    username: username,
                 })
             }
             if (user.role == 2) {
@@ -191,7 +230,8 @@ RegisterRouter.post('/save-login', async (req, res) => {
                     role: user.role,
                     login_id: user._id,
                     hotel_id: hotel._id,
-                    message: " Hotel Login successfully"
+                    message: " Hotel Login successfully",
+                    username: username,
                 })
             }
 
@@ -220,31 +260,11 @@ RegisterRouter.post('/save-login', async (req, res) => {
 RegisterRouter.post('/save-hotel', async (req, res) => {
     try {
         const { name, email, district, place, pin, time, phone, special, meals,
-             features, logo, hotelId,images,image2,image3,image4,image5,image6 } = req.body;
-
-        console.log(req.body);
-
-
-        // const hotelData = {
-
-
-
-        // }
-
-        // const hotels = await RestaurantRegisterModel(hotelData).save()
-        // console.log('datas', hotelData);
-        // const hotelName = {
-
-
-
-        // }
-
-        // const hotelsName = await LoginModel(hotelName).save()
-        // console.log('datas', hotelName);
-
+            features, logo, hotelId, images, } = req.body;
 
 
         const data = {
+            status: 0,
             district: district,
             name: name,
             email: email,
@@ -257,15 +277,11 @@ RegisterRouter.post('/save-hotel', async (req, res) => {
             features: features,
             logo: logo,
             hotelId: hotelId,
-            images:images,
-            image2:image2,
-            image3:image3,
-            image4:image4,
-            image5:image5,
-            image6:image6,
+            images: images,
+
 
         }
-        console.log('data', data);
+
         const user = await AddHotelModel(data).save()
         const districts = await HotelDistrictModel(data).save()
         if (user) {
@@ -295,11 +311,63 @@ RegisterRouter.post('/save-hotel', async (req, res) => {
     }
 })
 
+//update 
+
+RegisterRouter.put('/update-hotel', async (req, res) => {
+    try {
+
+        const { name, email, district, place, pin, time, phone, special, meals,
+            features, logo, hotelId, images, } = req.body;
+        console.log(hotelId, 'sad');
+        const details = await AddHotelModel.findOneAndUpdate({ hotelId: hotelId },
+            {
+                district: district,
+                name: name,
+                email: email,
+                place: place,
+                pin: pin,
+                time: time,
+                phone: phone,
+                special: special,
+                meals: meals,
+                features: features,
+                logo: logo,
+                hotelId: hotelId,
+                images: images,
+            })
+        if (details) {
+            res.status(200).json({
+                success: true,
+                error: false,
+                data: details,
+                message: "Data Upadated"
+            })
+        }
+        else {
+            res.status(404).json({
+                success: false,
+                error: true,
+                message: "Hotel not found"
+            });
+        }
+
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            error: true,
+            message: "Can't Update catch error"
+        })
+    }
+})
+
 
 
 RegisterRouter.get('/view-hotel/:id', async (req, res) => {
     try {
+
         const item = req.params.id;
+        console.log(item);
         const HotelDetails = await AddHotelModel.findOne({ hotelId: item })
         // console.log(contactDetails);
         if (HotelDetails) {
@@ -337,7 +405,7 @@ RegisterRouter.get('/save-district/:id', async (req, res) => {
 RegisterRouter.get('/view-district/:district', async (req, res) => {
     try {
         const district = req.params.district;
-        const HotelDetails = await AddHotelModel.find({district:district})
+        const HotelDetails = await AddHotelModel.find({ district: district })
         // console.log(contactDetails);
         if (HotelDetails) {
             return res.status(200).json({
@@ -346,11 +414,11 @@ RegisterRouter.get('/view-district/:district', async (req, res) => {
                 data: HotelDetails
             })
         }
-        else{
+        else {
             return res.status(400).json({
                 success: false,
                 error: true,
-                message:"No Reestaurants found"
+                message: "No Reestaurants found"
             })
         }
     }
@@ -362,63 +430,92 @@ RegisterRouter.get('/view-district/:district', async (req, res) => {
 
 
 
-// RegisterRouter.post('/delete/:id', async(req, res) => {
-//     try {
-//         const id = req.params.id
-//         const contactDetails =await RegisterModel.deleteOne({_id:id})
-//         console.log(contactDetails);
-//         if(contactDetails){
-//             return res.status(200).json({
-//                 success: true,
-//                 error: false,
-//                 message: 'deleted'
-//             })
-//         }
-//     } catch (error) {
-//     }
-
-// })
-
-
-
-RegisterRouter.post('/add-district', async (req, res) => {
+RegisterRouter.post('/add-review/:id', async (req, res) => {
     try {
+        const hotelId = req.params.id;
+        const { rating, userId, description, username, clnrating, atmrating, serrating, qltrating } = req.body;
 
+        const currentDate = new Date().toLocaleDateString();
+        const hotel = await AddHotelModel.findOne({ hotelId: hotelId });
 
-
-        const { district } = req.body;
-        const details = {
-            district: district
+        if (!hotel) {
+            return res.status(404).json({
+                success: false,
+                error: true,
+                message: "Hotel not found"
+            });
         }
-        const user = await DistrictModel(details).save()
 
-        if (user) {
+        const existingReview = hotel.review.find(review => review.userId === userId);
+        if (existingReview) {
+            return res.status(400).json({
+                success: false,
+                error: true,
+                message: "User already added a review for this hotel"
+            });
+        }
+
+        const details = await AddHotelModel.findOneAndUpdate(
+            { hotelId: hotelId },
+            {
+                $addToSet: {
+                    review: {
+                        username: username, userId: userId, rating: rating,
+                        clnrating: clnrating, atmrating: atmrating, serrating: serrating, qltrating: qltrating,
+                        description: description, date: currentDate
+                    }
+                }
+            },
+            { new: true }
+        );
+
+        res.status(200).json({
+            success: true,
+            error: false,
+            data: details,
+            message: "Review added"
+        });
+    } catch (err) {
+        res.status(400).json({
+            success: false,
+            error: true,
+            message: "Can't add review, catch error"
+        });
+    }
+});
+
+RegisterRouter.get('/view-review/:id', async (req, res) => {
+    try {
+        const hotelId = req.params.id;  
+        console.log(hotelId,'hotel');
+        const reviewDetails = await AddHotelModel.findOne({ hotelId: hotelId })
+        console.log(reviewDetails);
+        if (reviewDetails) {
             return res.status(200).json({
                 success: true,
                 error: false,
-                message: "added"
+                data: reviewDetails
             })
         }
-        else {
-
-        }
-
     }
-    catch (error) {
-        return res.status(400).json({
-            success: true,
-            error: false,
-            message: "can't add"
-        })
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            error: true,
+            message: "Can't view review, catch error"
+        });
     }
-
-
-
 })
+
+
+
+
+
+
 RegisterRouter.get('/view-district', async (req, res) => {
     try {
         const reviewDetails = await DistrictModel.find()
-        console.log(reviewDetails);
+        // console.log(reviewDetails);
         if (reviewDetails) {
             return res.status(200).json({
                 success: true,

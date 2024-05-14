@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Bg_kannur.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 function Bg_kannur() {
@@ -23,11 +23,11 @@ function Bg_kannur() {
     <>
       <div className="container" id="bg-kan-div">
         <div className="row ">
-          <h1 className="text-center text-dark">Top Restaurants</h1>
+          <h1 className="text-center text-dark">Top Restaurants </h1>
           <br />
           <br />
 
-          {Hotels.map((data, key) => (
+          {Hotels.filter(hotel => hotel.status === 1).map((data, key) => (
             <div className="col-lg-3">
               <div className="card" style={{ width: "18rem" }}>
                 <img
@@ -39,14 +39,9 @@ function Bg_kannur() {
                 <div className="card-body">
                   <h5 className="card-title">{data.name}</h5>
                   <p className="card-text">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star"></i>1234
-                    <a href="/user/:district/review" value="">
+                    <Link to={`/user/viewHotel/${data.hotelId}`} >
                       Show More
-                    </a>
+                    </Link>
                   </p>
                   {/* <a href="" className="btn btn-warning">
 Delete

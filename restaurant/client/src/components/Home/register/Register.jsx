@@ -3,7 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import './Register.css'
 import { useNavigate } from 'react-router-dom';
-import Kannur from '../../../pages/User/location/Kannur';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Register() {
 
 
@@ -61,10 +62,12 @@ function Register() {
         .then((res) => {
           navigate('/');
           console.log("res", res);
+          toast.success(res.data.message)
           window.location.reload();
         })
         .catch(err => {
           console.log(err);
+          toast.error(err.response.data.message)
         })
     }
   }
@@ -107,7 +110,7 @@ function Register() {
                 aria-label="Close"
               />
             </div>
-            <div className="modal-body"><form>
+            <div className="modal-body text-start"><form>
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Restaurant name
@@ -121,69 +124,10 @@ function Register() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
-                <span style={{ color: formErrors.name ? "red" : "" }}> {formErrors.name} </span>
+                <span className='validSpan' style={{ color: formErrors.name ? "red" : "" }}> {formErrors.name} </span>
                 <div id="emailHelp" className="form-text">
                 </div>
               </div>
-              {/* <div className="mb-3">
-    <label htmlFor="exampleInputEmail1" className="form-label">
-      Place
-    </label>
-    <input
-      type="text"
-      name='place'
-      className="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-    />
-    <div id="emailHelp" className="form-text">
-    </div>
-  </div>
-  <div className="mb-3">
-    <label htmlFor="exampleInputEmail1" className="form-label">
-     Phone no
-    </label>
-    <input
-      type="text"
-      name='phone'
-      className="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-    />
-    <div id="emailHelp" className="form-text">
-    </div>
-  </div>
-  <div className="mb-3">
-    <label htmlFor="exampleInputEmail1" className="form-label">
-     Working time
-    </label>
-    <input
-      type="text"
-      name='time'
-      className="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-    />
-    <div id="emailHelp" className="form-text">
-    </div>
-  </div>
-  <div className="mb-3">
-  <label htmlFor="formFile" className="form-label">
-    Restaurant Logo
-  </label>
-  <input className="form-control" type="file" id="formFile" />
-</div> */}
-
-              {/* <div className="mb-3">
-  <label htmlFor="formFile" className="form-label">
-   Images
-  </label>
-  <input className="form-control" type="file" id="formFile" />
-  </div>
-  <div className="mb-3">
-  <input className="form-control" type="file" id="formFile" />
-
-</div> */}
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Email address
@@ -197,7 +141,7 @@ function Register() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
-                <span style={{ color: formErrors.email ? "red" : "" }}> {formErrors.email} </span>
+                <span className='validSpan'style={{ color: formErrors.email ? "red" : "" }}> {formErrors.email} </span>
               </div>
 
 
@@ -212,7 +156,7 @@ function Register() {
                   onClick={() => { setFormErrors({ ...formErrors, district: "" }) }}
                   type="text"
                   name='district'
-                  className="form-control"
+                  className="form-control "
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 >
@@ -233,7 +177,7 @@ function Register() {
                 <option value='Thiruvananthapuram'>Thiruvananthapuram</option>
                 </select>
                 
-                <span style={{ color: formErrors.district ? "red" : "" }}> {formErrors.district} </span>
+                <span className='validSpan' style={{ color: formErrors.district ? "red" : "" }}> {formErrors.district} </span>
               </div>
 
 
@@ -250,7 +194,7 @@ function Register() {
                   className="form-control"
                   id="exampleInputPassword1"
                 />
-                <span style={{ color: formErrors.password ? "red" : "" }}> {formErrors.password} </span>
+                <span className='validSpan'style={{ color: formErrors.password ? "red" : "" }}> {formErrors.password} </span>
               </div>
               {/* <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">

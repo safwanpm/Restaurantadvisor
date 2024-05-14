@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import './Navbar.css'
 import Login from '../../Home/login/Login'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Navbar() {
 
 
@@ -11,6 +13,7 @@ function Navbar() {
 
   const logout = () => {
     localStorage.clear()
+    toast.success('logout success')
     navigate('/')
   }
   useEffect(() => {

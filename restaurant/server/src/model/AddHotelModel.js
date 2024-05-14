@@ -3,6 +3,7 @@ mongoose.connect('mongodb+srv://safwanpm0:safwanpm0@cluster0.dk6pqys.mongodb.net
 
 const Schema = mongoose.Schema
 const user_addhotelSchema = new Schema({
+    status:{type:Number},
     name:{type:String},
     hotelId:{type:mongoose.Types.ObjectId,ref:"restaurant_tb"},
     district:{type:String},
@@ -15,14 +16,19 @@ const user_addhotelSchema = new Schema({
     meals:{type:String}, 
     features:{type:String},
     logo:{type:String},
-    images:{type:String}, 
-    // image2:{type:String},
-    // image3:{type:String},
-    // image4:{type:String},
-    // image5:{type:String},
-    // image6:{type:String},
-
-    
+    images:{type:[String]}, 
+    review:[{
+        userId:{type:String},
+        username:{type:String},
+        rating:{type:Number},
+        description:{type:String},
+        date:{type:String},
+        rating:{type:Number},
+        clnrating:{type:Number},
+        atmrating:{type:Number},
+        serrating:{type:Number},
+        qltrating:{type:Number},
+    }],  
 })
 
 const AddHotelModel = mongoose.model('hotels_tb',user_addhotelSchema)

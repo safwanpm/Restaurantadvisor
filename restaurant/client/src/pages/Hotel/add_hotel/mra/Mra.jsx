@@ -18,6 +18,8 @@ function Mra() {
         <div >
           <Bg_mra />
         </div>
+        <div>
+        </div>
       </section>
       
       <Footer /></>

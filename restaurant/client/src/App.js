@@ -16,9 +16,13 @@ import Mra from './pages/Hotel/add_hotel/mra/Mra';
 import UserRating from './pages/User/rating/UserRating';
 import AdminDistrict from './components/Admin/AdminDistrict';
 import AdminDistrictpg from './pages/Admin/AdminDistrictpg';
+import { ToastContainer } from 'react-toastify';
+import AdminHotelspg from './pages/Admin/AdminHotelspg';
 function App() {
+ 
   return (
     <>
+    < ToastContainer limit={1} position={'top-center'} autoClose ={2000}></ToastContainer>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home></Home>} ></Route>
@@ -28,16 +32,18 @@ function App() {
           <Route path='/user' element={<UserHome />} />
           <Route path='/user/:district/review' element={<UserRating/>} />
           <Route path='/user/:district' element={<Kannur></Kannur>} ></Route>  
+          <Route path='/user/viewHotel/:id' element={<AdminHotelspg></AdminHotelspg>} ></Route>  
           <Route path='/hotel' element={<Hotelhomepg />} /> 
           <Route path='/hotel/add_hotel' element={<Add_hotel />} ></Route>
           <Route path='/hotel/hotel_details' element={<Mra />} />
-        
+          <Route path='/viewHotel/:id'element={<AdminHotelspg/>}/>
         
           
           
         
         </Routes>
       </BrowserRouter>
+     
     </>
   );
 }
