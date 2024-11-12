@@ -60,7 +60,7 @@ function Register() {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       axios.post('http://localhost:4000/save/save-restaurant', data)
         .then((res) => {
-          navigate('/');
+          navigate('/login');
           console.log("res", res);
           toast.success(res.data.message)
           window.location.reload();

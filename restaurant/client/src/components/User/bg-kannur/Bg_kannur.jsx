@@ -23,12 +23,15 @@ function Bg_kannur() {
     <>
       <div className="container" id="bg-kan-div">
         <div className="row ">
-          <h1 className="text-center text-dark">Top Restaurants </h1>
+         
+            <h1 className="text-center text-dark mt-10">Top Restaurants in {district}</h1>
+            
+           
           <br />
           <br />
 
           {Hotels.filter(hotel => hotel.status === 1).map((data, key) => (
-            <div className="col-lg-3">
+            <div className="col-lg-3 mt-10 ">
               <div className="card" style={{ width: "18rem" }}>
                 <img
                   src={`/uploads/${data.logo}`}

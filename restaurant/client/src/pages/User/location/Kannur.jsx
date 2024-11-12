@@ -1,22 +1,19 @@
-import React from 'react'
-import Bg_kannur from '../../../components/User/bg-kannur/Bg_kannur'
-import Navbar from '../../../components/User/navbar/Navbar'
-import Footer from '../../../components/Home/footer/Footer'
-
+import React from "react";
+import Bg_kannur from "../../../components/User/bg-kannur/Bg_kannur";
+import Navbar from "../../../components/User/navbar/Navbar";
+import Footer from "../../../components/Home/footer/Footer";
 
 function Kannur() {
-
-
-
-
-
   return (
     <>
-   <Navbar/>
-   <Bg_kannur/>
-   <Footer/>
+      <div>
+        <Navbar />
+        <Bg_kannur />
+
+        
+      </div>
     </>
-  )
+  );
 }
 
-export default Kannur
+export default Kannur;

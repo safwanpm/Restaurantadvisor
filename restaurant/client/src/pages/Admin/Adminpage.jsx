@@ -8,7 +8,7 @@ function Adminpage() {
     <>
     <Navbar/><br/><br/>
     <Admin_bg/>
-    <Footer/>
+   
     </>
   )
 }

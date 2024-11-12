@@ -65,7 +65,7 @@ function Admin_bg() {
                       <Link to={`/viewHotel/${data.hotelId}`}>See More</Link>
                     </h5>
 
-                    <p>
+                    <p className="d-flex justify-content-between">
                       {data.status === 0 ? (
                         <button
                           className="btn btn-primary"
@@ -77,7 +77,7 @@ function Admin_bg() {
                         </button>
                       ) : (
                         <button
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={() =>
                             UpdateHotels(data.hotelId, data.status)
                           }
@@ -87,7 +87,7 @@ function Admin_bg() {
                       )}
 
                       <button
-                        className="btn btn-danger"
+                        className="btn btn-danger "
                         onClick={() => deleteProduct(data.hotelId)}
                       >
                         Delete

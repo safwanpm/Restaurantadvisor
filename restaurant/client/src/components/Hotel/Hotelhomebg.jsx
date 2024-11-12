@@ -119,7 +119,7 @@ function Hotelhomebg() {
 
                     <div className='col-lg-6' id='bgdiv2'>
 
-                        <img id='bgimg1' src='/cory-bjork--V0YGn1pjzE-unsplash.jpg'></img>
+                        <img id='bgimg1' src='/drew-coffman-jUOaONoXJQk-unsplash.jpg'></img>
                     </div>
                 </div>
             </div>

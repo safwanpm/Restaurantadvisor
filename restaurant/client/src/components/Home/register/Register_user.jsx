@@ -4,10 +4,11 @@ import React from 'react'
 import './Register_user.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 function Register_user() {
 
 
-
+const Navigate =useNavigate()
     const [data, setdata] = useState({
         name: "",
         password: "",
@@ -54,7 +55,8 @@ function Register_user() {
                 .then((res) => {
                     console.log("res", res);
                     toast.success(res.data.message)
-                    window.location.reload();
+                    Navigate('/login')
+                    window.location.reload()
                 })
                 .catch(err => {
                     console.log(err);

@@ -426,10 +426,6 @@ RegisterRouter.get('/view-district/:district', async (req, res) => {
     }
 })
 
-
-
-
-
 RegisterRouter.post('/add-review/:id', async (req, res) => {
     try {
         const hotelId = req.params.id;
@@ -446,43 +442,119 @@ RegisterRouter.post('/add-review/:id', async (req, res) => {
             });
         }
 
-        const existingReview = hotel.review.find(review => review.userId === userId);
-        if (existingReview) {
-            return res.status(400).json({
-                success: false,
-                error: true,
-                message: "User already added a review for this hotel"
+        const existingReviewIndex = hotel.review.findIndex(review => review.userId === userId);
+
+        if (existingReviewIndex !== -1) {
+            // Update the existing review
+            hotel.review[existingReviewIndex] = {
+                ...hotel.review[existingReviewIndex],
+                username: username,
+                userId: userId,
+                rating: rating,
+                clnrating: clnrating,
+                atmrating: atmrating,
+                serrating: serrating,
+                qltrating: qltrating,
+                description: description,
+                date: currentDate
+            };
+
+            await hotel.save();
+
+            return res.status(200).json({
+                success: true,
+                error: false,
+                data: hotel,
+                message: "Review updated"
+            });
+        } else {
+            // Add a new review if the user hasn't reviewed yet
+            hotel.review.push({
+                username: username,
+                userId: userId,
+                rating: rating,
+                clnrating: clnrating,
+                atmrating: atmrating,
+                serrating: serrating,
+                qltrating: qltrating,
+                description: description,
+                date: currentDate
+            });
+
+            await hotel.save();
+
+            return res.status(200).json({
+                success: true,
+                error: false,
+                data: hotel,
+                message: "Review added"
             });
         }
-
-        const details = await AddHotelModel.findOneAndUpdate(
-            { hotelId: hotelId },
-            {
-                $addToSet: {
-                    review: {
-                        username: username, userId: userId, rating: rating,
-                        clnrating: clnrating, atmrating: atmrating, serrating: serrating, qltrating: qltrating,
-                        description: description, date: currentDate
-                    }
-                }
-            },
-            { new: true }
-        );
-
-        res.status(200).json({
-            success: true,
-            error: false,
-            data: details,
-            message: "Review added"
-        });
     } catch (err) {
         res.status(400).json({
             success: false,
             error: true,
-            message: "Can't add review, catch error"
+            message: "Can't add or update review, catch error"
         });
     }
 });
+
+
+
+
+// RegisterRouter.post('/add-review/:id', async (req, res) => {
+//     try {
+//         const hotelId = req.params.id;
+//         const { rating, userId, description, username, clnrating, atmrating, serrating, qltrating } = req.body;
+
+//         const currentDate = new Date().toLocaleDateString();
+//         const hotel = await AddHotelModel.findOne({ hotelId: hotelId });
+
+//         if (!hotel) {
+//             return res.status(404).json({
+//                 success: false,
+//                 error: true,
+//                 message: "Hotel not found"
+//             });
+//         }
+
+//         const existingReview = hotel.review.find(review => review.userId === userId);
+//         if (existingReview) {
+//             return res.status(400).json({
+//                 success: false,
+//                 error: true,
+//                 message: "User already added a review for this hotel"
+//             });
+//         }
+
+//         const details = await AddHotelModel.findOneAndUpdate(
+//             { hotelId: hotelId },
+//             {
+//                 $addToSet: {
+//                     review: {
+//                         username: username, userId: userId, rating: rating,
+//                         clnrating: clnrating, atmrating: atmrating, serrating: serrating, qltrating: qltrating,
+//                         description: description, date: currentDate
+//                     }
+//                 }
+//             },
+//             { new: true }
+//         );
+
+//         res.status(200).json({
+//             success: true,
+//             error: false,
+//             data: details,
+//             message: "Review added"
+//         });
+//     } catch (err) {
+//         res.status(400).json({
+//             success: false,
+//             error: true,
+//             message: "Can't add review, catch error"
+//         });
+//     }
+// });
 
 RegisterRouter.get('/view-review/:id', async (req, res) => {
     try {
